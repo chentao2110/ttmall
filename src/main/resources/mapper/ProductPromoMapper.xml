@@ -7,10 +7,12 @@
       <arg column="product_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="promo_item_price" javaType="java.lang.Double" jdbcType="DOUBLE" />
       <arg column="activity_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, product_id, promo_item_price, activity_id
+    id, product_id, promo_item_price, activity_id, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,9 +26,11 @@
   </delete>
   <insert id="insert" parameterType="com.ttmall.pojo.ProductPromo">
     insert into ttmall_product_promo (id, product_id, promo_item_price, 
-      activity_id)
+      activity_id, create_time, update_time
+      )
     values (#{id,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{promoItemPrice,jdbcType=DOUBLE}, 
-      #{activityId,jdbcType=INTEGER})
+      #{activityId,jdbcType=INTEGER}, now(), now()
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ttmall.pojo.ProductPromo">
     insert into ttmall_product_promo
@@ -43,6 +47,12 @@
       <if test="activityId != null">
         activity_id,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -56,6 +66,12 @@
       </if>
       <if test="activityId != null">
         #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        now(),
+      </if>
+      <if test="updateTime != null">
+        now(),
       </if>
     </trim>
   </insert>
@@ -71,6 +87,12 @@
       <if test="activityId != null">
         activity_id = #{activityId,jdbcType=INTEGER},
       </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = now(),
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -78,7 +100,10 @@
     update ttmall_product_promo
     set product_id = #{productId,jdbcType=INTEGER},
       promo_item_price = #{promoItemPrice,jdbcType=DOUBLE},
-      activity_id = #{activityId,jdbcType=INTEGER}
+      activity_id = #{activityId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

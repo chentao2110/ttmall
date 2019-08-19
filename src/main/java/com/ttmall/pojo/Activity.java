@@ -13,12 +13,18 @@ public class Activity {
 
     private Date endTime;
 
-    public Activity(Integer id, Integer productId, String description, Date startTime, Date endTime) {
+    private Date createTime;
+
+    private Date updateTime;
+
+    public Activity(Integer id, Integer productId, String description, Date startTime, Date endTime, Date createTime, Date updateTime) {
         this.id = id;
         this.productId = productId;
         this.description = description;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
     public Activity() {
@@ -63,5 +69,21 @@ public class Activity {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

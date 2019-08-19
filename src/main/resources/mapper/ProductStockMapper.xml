@@ -6,10 +6,12 @@
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="stock" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="product_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, stock, product_id
+    id, stock, product_id, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -22,10 +24,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ttmall.pojo.ProductStock">
-    insert into ttmall_product_stock (id, stock, product_id
-      )
-    values (#{id,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}
-      )
+    insert into ttmall_product_stock (id, stock, product_id, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, 
+      now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.ttmall.pojo.ProductStock">
     insert into ttmall_product_stock
@@ -39,6 +41,12 @@
       <if test="productId != null">
         product_id,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -49,6 +57,12 @@
       </if>
       <if test="productId != null">
         #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        now(),
+      </if>
+      <if test="updateTime != null">
+        now(),
       </if>
     </trim>
   </insert>
@@ -61,13 +75,22 @@
       <if test="productId != null">
         product_id = #{productId,jdbcType=INTEGER},
       </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = now(),
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ttmall.pojo.ProductStock">
     update ttmall_product_stock
     set stock = #{stock,jdbcType=INTEGER},
-      product_id = #{productId,jdbcType=INTEGER}
+      product_id = #{productId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

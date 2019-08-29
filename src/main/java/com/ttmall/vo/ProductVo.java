@@ -1,33 +1,22 @@
-package com.ttmall.pojo;
+package com.ttmall.vo;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
-public class Product {
+public class ProductVo {
     private Integer id;
 
     private Integer categoryId;
-
     private String name;
 
     private String subtitle;
-
     private String mainImage;
 
     private String subImages;
 
     private String detail;
-
     private BigDecimal price;
-
-
-
-    private Integer status;
-
-    private Date createTime;
-
-    private Date updateTime;
-
+    private BigDecimal promoPrice;
+    private Integer stock;
     private Integer sales;
 
     public Integer getId() {
@@ -94,28 +83,20 @@ public class Product {
         this.price = price;
     }
 
-    public Integer getStatus() {
-        return status;
+    public BigDecimal getPromoPrice() {
+        return promoPrice;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setPromoPrice(BigDecimal promoPrice) {
+        this.promoPrice = promoPrice;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Integer getStock() {
+        return stock;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 
     public Integer getSales() {
@@ -123,22 +104,6 @@ public class Product {
     }
 
     public void setSales(Integer sales) {
-        this.sales = sales;
-    }
-
-    public Product(Integer id, Integer categoryId, String name, String subtitle, String mainImage, String subImages, String detail, BigDecimal price, Integer status, Date createTime, Date updateTime, Integer sales) {
-
-        this.id = id;
-        this.categoryId = categoryId;
-        this.name = name;
-        this.subtitle = subtitle;
-        this.mainImage = mainImage;
-        this.subImages = subImages;
-        this.detail = detail;
-        this.price = price;
-        this.status = status;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
         this.sales = sales;
     }
 }

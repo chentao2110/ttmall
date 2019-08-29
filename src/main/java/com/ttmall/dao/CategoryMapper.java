@@ -2,6 +2,8 @@ package com.ttmall.dao;
 
 import com.ttmall.pojo.Category;
 
+import java.util.List;
+
 public interface CategoryMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -10,6 +12,7 @@ public interface CategoryMapper {
     int insertSelective(Category record);
 
     Category selectByPrimaryKey(Integer id);
+    List<Category> selectAllCategory();
 
     int updateByPrimaryKeySelective(Category record);
 

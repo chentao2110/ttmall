@@ -1,15 +1,24 @@
-package com.ttmall.pojo;
+package com.ttmall.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
-    private Integer id;
-
+public class UserModel implements Serializable {
+    private Integer id ;
+    @NotBlank(message = "用户名不能为空")
     private String username;
+    @NotBlank(message = "密码不能为空")
+    private String password;
 
     private String email;
 
     private String phone;
+
+    private String question;
+
+    private String answer;
 
     private Integer role;
 
@@ -17,25 +26,11 @@ public class User {
 
     private Date updateTime;
 
-    public User(Integer id, String username, String email, String phone, Integer role, Date createTime, Date updateTime) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.phone = phone;
-        this.role = role;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
-    }
-
-    public User() {
-        super();
-    }
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -44,7 +39,15 @@ public class User {
     }
 
     public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
@@ -52,7 +55,7 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
+        this.email = email;
     }
 
     public String getPhone() {
@@ -60,7 +63,23 @@ public class User {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
+        this.phone = phone;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public Integer getRole() {

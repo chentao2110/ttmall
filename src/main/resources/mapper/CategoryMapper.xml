@@ -21,7 +21,14 @@
     from ttmall_category
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectAllCategory" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from ttmall_category
+      GROUP BY parent_id,id
+      ORDER BY parent_id
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from ttmall_category
     where id = #{id,jdbcType=INTEGER}
   </delete>

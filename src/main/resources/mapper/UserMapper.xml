@@ -5,40 +5,92 @@
     <constructor>
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="username" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="password" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="email" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="phone" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="question" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="answer" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="role" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, username, password, email, phone, question, answer, role, create_time, update_time
+    id, username, email, phone, role, create_time, update_time
   </sql>
+  <select id="selectByUserName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from ttmall_user where username = #{username}
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from ttmall_user
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="checkUsername" resultType="int" parameterType="string">
+    select count(1)
+    from ttmall_user
+    where username = #{username}
+  </select>
+  <select id="checkByPhone" resultType="int">
+    select count(1)
+    from ttmall_user
+    where phone = #{phone}
+  </select>
+  <select id="checkByEmail" resultType="int">
+    select count(1)
+    from ttmall_user
+    where email = #{email}
+  </select>
+    <select id="selectPasswordByEmail" resultType="string">
+      select
+      p.password
+      from
+      ttmall_user  u ,
+      ttmall_user_password p
+      where  u.email =#{email}
+       and u.id = p.user_id
+    </select>
+  <select id="selectPasswordByPhone" resultType="string">
+      select
+      p.password
+      from
+      ttmall_user  u ,
+      ttmall_user_password p
+      where  u.phone =#{phone}
+       and u.id = p.user_id
+  </select>
+  <select id="selectByUserModel" resultMap="BaseResultMap" parameterType="com.ttmall.pojo.User">
+    select
+    <include refid="Base_Column_List"/>
+    from
+    ttmall_user
+    <where>
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="username != null">
+         and  username = #{username}
+        </if>
+        <if test="email != null">
+         and email = #{email}
+        </if>
+        <if test="phone != null">
+         and phone = #{phone}
+        </if>
+      </trim>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from ttmall_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ttmall.pojo.User">
-    insert into ttmall_user (id, username, password, 
-      email, phone, question, 
-      answer, role, create_time, 
+    insert into ttmall_user (id, username, email, 
+      phone, role, create_time, 
       update_time)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, 
-      #{answer,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, now(),
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, now(),
       now())
   </insert>
-  <insert id="insertSelective" parameterType="com.ttmall.pojo.User">
+  <insert id="insertSelective" parameterType="com.ttmall.pojo.User" keyProperty="id" useGeneratedKeys="true">
     insert into ttmall_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -47,30 +99,21 @@
       <if test="username != null">
         username,
       </if>
-      <if test="password != null">
-        password,
-      </if>
       <if test="email != null">
         email,
       </if>
       <if test="phone != null">
         phone,
       </if>
-      <if test="question != null">
-        question,
-      </if>
-      <if test="answer != null">
-        answer,
-      </if>
       <if test="role != null">
         role,
       </if>
-      <if test="createTime != null">
+
         create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
+
+
+        update_time
+
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -79,30 +122,17 @@
       <if test="username != null">
         #{username,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
-      </if>
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
       </if>
       <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="question != null">
-        #{question,jdbcType=VARCHAR},
-      </if>
-      <if test="answer != null">
-        #{answer,jdbcType=VARCHAR},
-      </if>
       <if test="role != null">
         #{role,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null">
         now(),
-      </if>
-      <if test="updateTime != null">
-        now(),
-      </if>
+        now()
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.ttmall.pojo.User">
@@ -111,20 +141,11 @@
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
-      </if>
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
       </if>
       <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="question != null">
-        question = #{question,jdbcType=VARCHAR},
-      </if>
-      <if test="answer != null">
-        answer = #{answer,jdbcType=VARCHAR},
       </if>
       <if test="role != null">
         role = #{role,jdbcType=INTEGER},
@@ -141,11 +162,8 @@
   <update id="updateByPrimaryKey" parameterType="com.ttmall.pojo.User">
     update ttmall_user
     set username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      question = #{question,jdbcType=VARCHAR},
-      answer = #{answer,jdbcType=VARCHAR},
       role = #{role,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now()
